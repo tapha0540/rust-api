@@ -1,10 +1,17 @@
-use axum::{Json, extract::Path, http::StatusCode};
+use axum::{
+    Json,
+    extract::{Path, State},
+    http::StatusCode,
+};
 
-use crate::{models::category::Category, types::ApiResponse};
+use crate::{
+    models::category::Category,
+    repository,
+    services::logger::Logger,
+    types::{ApiResponse, AppState},
+};
 
 pub async fn create(Json(category): Json<Category>) -> (StatusCode, Json<ApiResponse<Category>>) {
-    
-
     let resp = ApiResponse {
         message: "Category created".to_string(),
         data: Some(category),
@@ -13,25 +20,29 @@ pub async fn create(Json(category): Json<Category>) -> (StatusCode, Json<ApiResp
     (StatusCode::CREATED, Json(resp))
 }
 
-pub async fn get_categories() -> (StatusCode, Json<ApiResponse<Vec<Category>>>) {
-
-
-    let ans = vec![Category {
-        id: 1,
-        name: "".to_string(),
-        description: "".to_string(),
-        parent_id: 1,
-        icon_url: "".to_string(),
-        created_at: "".to_string(),
-        updated_at: "".to_string(),
-    }];
-
-    let resp = ApiResponse {
-        message: "Categories fetched".to_string(),
-        data: Some(ans),
-    };
-
-    (StatusCode::OK, Json(resp))
+pub async fn get_categories(
+    State(state): State<AppState>,
+) -> (StatusCode, Json<ApiResponse<Vec<Category>>>) {
+    match repository::category::get_categories(&state.db).await {
+        Ok(categories) => (
+            StatusCode::OK,
+            Json(ApiResponse {
+                message: "Categories fetched".to_string(),
+                data: Some(categories),
+            }),
+        ),
+        Err(err) => {
+            let mut logger = Logger::new("error.log");
+            logger.log(format!("{:?}", err));
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(ApiResponse {
+                    message: "product Categories fetching failed".to_string(),
+                    data: None,
+                }),
+            )
+        }
+    }
 }
 
 pub async fn get_category(Path(id): Path<u32>) -> (StatusCode, Json<ApiResponse<()>>) {

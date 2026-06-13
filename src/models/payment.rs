@@ -1,4 +1,4 @@
-#[derive(serde::Serialize, Debug, Clone, PartialEq)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum PaymentMethod {
     Wave,
     OrangeMoney,
@@ -17,7 +17,7 @@ impl PaymentMethod {
     }
 }
 
-#[derive(serde::Serialize, Debug, Clone, PartialEq)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum PaymentStatus {
     Pending,
     Completed,
@@ -34,7 +34,7 @@ impl PaymentStatus {
     }
 }
 
-#[derive(serde::Serialize, Debug, Clone, PartialEq)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, sqlx::FromRow)]
 pub struct Payment {
     id: u32,
     order_id: u32,

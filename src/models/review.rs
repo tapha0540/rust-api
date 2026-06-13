@@ -1,4 +1,4 @@
-#[derive(serde::Serialize, Debug, Clone, PartialEq)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq, sqlx::FromRow)]
 pub struct Review {
     id: u32,
     product_id: u32,

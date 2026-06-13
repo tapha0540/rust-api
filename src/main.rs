@@ -5,6 +5,7 @@ mod models;
 mod routes;
 mod services;
 mod types;
+mod repository;
 
 use axum::Router;
 use std::env;

@@ -1,4 +1,5 @@
-#[derive(serde::Serialize, Debug, Clone, PartialEq)]
+
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, sqlx::FromRow)]
 
 pub struct OrderItem {
     id: u16,

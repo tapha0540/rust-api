@@ -10,5 +10,5 @@ dotenvy = "0.15.7"
 jsonwebtoken = "10.4.0"
 mysql = "28.0.0"
 serde = "1.0.228"
-sqlx = { version = "0.9.0", default-features = false, features = ["mysql", "runtime-tokio", "tls-rustls", "macros"] }
+sqlx = { version = "0.9.0", default-features = false, features = ["mysql", "runtime-tokio", "tls-rustls", "macros", "chrono"] }
 tokio = "1.52.3"

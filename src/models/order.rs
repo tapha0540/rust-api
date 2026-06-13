@@ -1,4 +1,5 @@
-#[derive(serde::Serialize, Debug, Clone, PartialEq, Eq)]
+
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq,)]
 pub enum OrderStatus {
     Pending,
     Processing,
@@ -19,7 +20,7 @@ impl OrderStatus {
     }
 }
 
-#[derive(serde::Serialize, Debug, Clone, PartialEq)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, sqlx::FromRow)]
 pub struct Order {
     id: u32,
     user_id: u32,

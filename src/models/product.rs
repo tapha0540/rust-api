@@ -1,4 +1,4 @@
-#[derive(serde::Serialize, Debug, Clone, PartialEq)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, sqlx::FromRow)]
 pub struct Product {
     id: u32,
     name: String,

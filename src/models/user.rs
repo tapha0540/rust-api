@@ -1,4 +1,4 @@
-#[derive(serde::Serialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum UserRole {
     Customer,
     Admin,
@@ -12,9 +12,9 @@ impl UserRole {
         }
     }
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, Eq)]
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq, sqlx::FromRow)]
 pub struct User {
-    id: u32,
+    id: i32,
     first_name: String,
     last_name: String,
     email: String,
