@@ -1,3 +1,5 @@
+use chrono::{DateTime, Utc};
+
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum UserRole {
     Customer,
@@ -22,6 +24,6 @@ pub struct User {
     role: UserRole,
     phone: String,
     profile_url: String,
-    created_at: String,
-    updated_at: String,
+    created_at: DateTime<Utc>,
+    updated_at: DateTime<Utc>,
 }

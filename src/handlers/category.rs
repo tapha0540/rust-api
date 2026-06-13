@@ -33,7 +33,7 @@ pub async fn get_categories(
         ),
         Err(err) => {
             let mut logger = Logger::new("error.log");
-            logger.log(format!("{:?}", err));
+            logger.log(err);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(ApiResponse {

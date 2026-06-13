@@ -1,3 +1,5 @@
+use chrono::{DateTime, Utc};
+
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq,)]
 pub enum OrderStatus {
@@ -26,6 +28,6 @@ pub struct Order {
     user_id: u32,
     status: OrderStatus,
     total: f32,
-    created_at: String,
-    updated_at: String,
+    created_at: DateTime<Utc>,
+    updated_at: DateTime<Utc>,
 }

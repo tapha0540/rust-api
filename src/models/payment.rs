@@ -1,3 +1,5 @@
+use chrono::{DateTime, Utc};
+
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum PaymentMethod {
     Wave,
@@ -41,5 +43,5 @@ pub struct Payment {
     amount: f32,
     method: PaymentMethod,
     status: PaymentStatus,
-    created_at: String,
+    created_at: DateTime<Utc>,
 }

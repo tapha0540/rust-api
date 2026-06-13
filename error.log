@@ -1,0 +1,7 @@
+ColumnDecode { index: "\"created_at\"", source: "mismatched types; Rust type `alloc::string::String` (as SQL type `VARCHAR`) is not compatible with SQL type `TIMESTAMP`" }ColumnDecode { index: "\"created_at\"", source: "mismatched types; Rust type `alloc::string::String` (as SQL type `VARCHAR`) is not compatible with SQL type `TIMESTAMP`" }ColumnDecode { index: "\"created_at\"", source: "mismatched types; Rust type `alloc::string::String` (as SQL type `VARCHAR`) is not compatible with SQL type `TIMESTAMP`" }
+ColumnDecode { index: "\"created_at\"", source: "mismatched types; Rust type `alloc::string::String` (as SQL type `VARCHAR`) is not compatible with SQL type `TIMESTAMP`" }
+ColumnDecode { index: "\"created_at\"", source: "mismatched types; Rust type `alloc::string::String` (as SQL type `VARCHAR`) is not compatible with SQL type `TIMESTAMP`" }
+ColumnDecode { index: "\"created_at\"", source: "mismatched types; Rust type `alloc::string::String` (as SQL type `VARCHAR`) is not compatible with SQL type `TIMESTAMP`" }
+ColumnDecode { index: "\"created_at\"", source: "mismatched types; Rust type `alloc::string::String` (as SQL type `VARCHAR`) is not compatible with SQL type `TIMESTAMP`" }
+ColumnDecode { index: "\"created_at\"", source: "mismatched types; Rust type `alloc::string::String` (as SQL type `VARCHAR`) is not compatible with SQL type `TIMESTAMP`" }
+ColumnDecode { index: "\"created_at\"", source: "mismatched types; Rust type `alloc::string::String` (as SQL type `VARCHAR`) is not compatible with SQL type `TIMESTAMP`" }
