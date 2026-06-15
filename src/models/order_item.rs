@@ -2,9 +2,9 @@
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, sqlx::FromRow)]
 
 pub struct OrderItem {
-    id: u16,
-    order_id: u32,
-    product_id: u32,
-    quantity: u16,
-    price: f32,
+    pub id: Option<i16>,
+    pub order_id: Option<i32>,
+    pub product_id: Option<i32>,
+    pub quantity: Option<i16>,
+    pub price: Option<f32>,
 }

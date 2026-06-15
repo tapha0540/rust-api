@@ -9,6 +9,18 @@ pub enum PaymentMethod {
 }
 
 impl PaymentMethod {
+    pub fn new(method: String) -> Option<Self> {
+        match method.as_str() {
+            "wave" => Some(Self::Wave),
+            "orange money" => Some(Self::OrangeMoney),
+            "kpay" => Some(Self::Kpay),
+            "cash" => Some(Self::Cash),
+            _ => {
+                dbg!("Invalid method value !");
+                None
+            }
+        }
+    }
     pub fn as_str(&self) -> String {
         match self {
             Self::Wave => "wave".to_string(),
@@ -27,6 +39,17 @@ pub enum PaymentStatus {
 }
 
 impl PaymentStatus {
+    pub fn new(status: String) -> Option<Self> {
+        match status.as_str() {
+            "pending" => Some(Self::Pending),
+            "completed" => Some(Self::Completed),
+            "Failed" => Some(Self::Failed),
+            _ => {
+                dbg!("Invalid PaymentStatus enum value");
+                None
+            }
+        }
+    }
     pub fn as_str(&self) -> String {
         match self {
             Self::Pending => "pending".to_string(),
@@ -38,10 +61,19 @@ impl PaymentStatus {
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, sqlx::FromRow)]
 pub struct Payment {
-    id: u32,
-    order_id: u32,
-    amount: f32,
-    method: PaymentMethod,
-    status: PaymentStatus,
-    created_at: DateTime<Utc>,
+    pub id: Option<i32>,
+    pub order_id: Option<i32>,
+    pub amount: Option<f32>,
+    pub method: Option<String>,
+    pub status: Option<String>,
+    pub created_at: Option<DateTime<Utc>>,
+}
+
+impl Payment {
+    pub fn get_method(&self) -> Option<PaymentMethod> {
+        PaymentMethod::new(self.method.clone()?)
+    }
+    pub fn get_status(&self) -> Option<PaymentStatus> {
+        PaymentStatus::new(self.status.clone()?)
+    }
 }

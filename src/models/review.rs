@@ -2,11 +2,11 @@ use chrono::{DateTime, Utc};
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq, sqlx::FromRow)]
 pub struct Review {
-    id: u32,
-    product_id: u32,
-    user_id: u32,
-    rating: u8,
-    comment: String,
-    created_at: DateTime<Utc>,
-    updated_at: DateTime<Utc>,
+    pub id: Option<i32>,
+    pub product_id: Option<i32>,
+    pub user_id: Option<i32>,
+    pub rating: Option<i8>,
+    pub comment: Option<String>,
+    pub created_at: Option<DateTime<Utc>>,
+    pub updated_at: Option<DateTime<Utc>>,
 }

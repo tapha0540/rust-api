@@ -1,6 +1,5 @@
 use sqlx::{MySql, Pool};
 
-use crate::services::logger::Logger;
 #[derive(serde::Serialize)]
 pub struct ApiResponse<T>
 where
@@ -25,5 +24,4 @@ where
 #[derive(Clone)]
 pub struct AppState {
     pub db: Pool<MySql>,
-    pub logger: Logger,
 }
