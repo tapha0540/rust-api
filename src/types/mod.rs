@@ -1,3 +1,6 @@
+use sqlx::{MySql, Pool};
+
+use crate::services::logger::Logger;
 #[derive(serde::Serialize)]
 pub struct ApiResponse<T>
 where
@@ -7,11 +10,20 @@ where
     pub data: Option<T>,
 }
 
-
-
-use sqlx::{MySql, Pool};
+impl<T> ApiResponse<T>
+where
+    T: serde::Serialize + Send + Sync + 'static,
+{
+    pub fn new(message: &str, data: Option<T>) -> Self {
+        Self {
+            message: message.to_string(),
+            data,
+        }
+    }
+}
 
 #[derive(Clone)]
 pub struct AppState {
     pub db: Pool<MySql>,
+    pub logger: Logger,
 }

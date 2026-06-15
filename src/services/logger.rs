@@ -1,12 +1,28 @@
 use std::{fmt::Debug, fs::File, io::Write};
 
+#[derive(Debug)]
 pub struct Logger {
     log_file: File,
+    path: String,
+}
+
+impl Clone for Logger {
+    fn clone(&self) -> Self {
+        Self {
+            path: self.path.clone(),
+            log_file: File::options()
+                .append(true)
+                .create(true)
+                .open(&self.path)
+                .expect("Failed to create the log file"),
+        }
+    }
 }
 
 impl Logger {
-    pub fn new(path: &str) -> Self {
+    pub fn new(path: String) -> Self {
         Self {
+            path: path.clone(),
             log_file: File::options()
                 .append(true)
                 .create(true)

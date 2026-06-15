@@ -2,15 +2,21 @@ mod database;
 mod handlers;
 mod middlewares;
 mod models;
+mod repository;
 mod routes;
 mod services;
+mod tests;
 mod types;
-mod repository;
 
 use axum::Router;
 use std::env;
 
-use crate::{database::connect_db, types::AppState};
+use crate::{
+    database::connect_db,
+    services::logger::Logger,
+    tests::category::delete_category_test,
+    types::AppState,
+};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
@@ -18,6 +24,9 @@ async fn main() {
 
     let state = AppState {
         db: connect_db().await,
+        logger: Logger::new(
+            env::var("LOG_FILE_PATH").expect("environment variable LOG_FILE_PATH is not set"),
+        ),
     };
 
     let app = Router::new()
