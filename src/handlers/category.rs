@@ -67,7 +67,7 @@ pub async fn get_categories(
 
 pub async fn get_category(
     State(state): State<AppState>,
-    Path(id): Path<u32>,
+    Path(id): Path<i32>,
 ) -> (StatusCode, Json<ApiResponse<Category>>) {
     match CategoryRepository::find_category_by_id(&state.db, id).await {
         Ok(category) => (
@@ -134,7 +134,7 @@ pub async fn update(
 
 pub async fn delete(
     State(mut state): State<AppState>,
-    Path(id): Path<u32>,
+    Path(id): Path<i32>,
 ) -> (StatusCode, Json<ApiResponse<u64>>) {
     match CategoryRepository::delete(&state.db, id).await {
         Ok(res) => {

@@ -28,14 +28,14 @@ impl CategoryRepository {
     .fetch_all(pool)
     .await
     }
-    pub async fn find_category_by_id(pool: &Pool<MySql>, id: u32) -> Result<Category, sqlx::Error> {
+    pub async fn find_category_by_id(pool: &Pool<MySql>, id: i32) -> Result<Category, sqlx::Error> {
         query_as::<MySql, Category>("SELECT id, name, description, parent_id, icon_url, created_at, updated_at FROM categories WHERE id = ?")
         .bind(id)
         .fetch_one(pool)
         .await
     }
 
-    pub async fn delete(pool: &Pool<MySql>, id: u32) -> Result<MySqlQueryResult, sqlx::Error> {
+    pub async fn delete(pool: &Pool<MySql>, id: i32) -> Result<MySqlQueryResult, sqlx::Error> {
         query("DELETE FROM categories WHERE id = ?")
             .bind(id)
             .execute(pool)

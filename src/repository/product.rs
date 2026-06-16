@@ -10,8 +10,8 @@ impl ProductRepository {
         name: String,
         description: String,
         price: f32,
-        stock: u32,
-        category_id: u16,
+        stock: i32,
+        category_id: i16,
         image_url: String,
     ) -> Result<MySqlQueryResult, sqlx::Error> {
         query("INSERT INTO products(name, description, price, stock, category_id, image_url) VALUES (?,?,?,?,?,?)")
@@ -24,7 +24,7 @@ impl ProductRepository {
     .execute(pool).await
     }
 
-    pub async fn find_product_by_id(pool: &Pool<MySql>, id: u32) -> Result<Product, sqlx::Error> {
+    pub async fn find_product_by_id(pool: &Pool<MySql>, id: i32) -> Result<Product, sqlx::Error> {
         query_as::<'_, MySql, Product>("SELECT id, name, description, price, stock, category_id, image_url, created_at, updated_at FROM products WHERE id = ?")
     .bind(id)
     .fetch_one(pool)
@@ -37,7 +37,7 @@ impl ProductRepository {
     .await
     }
 
-    pub async fn delete(pool: &Pool<MySql>, id: u32) -> Result<MySqlQueryResult, sqlx::Error> {
+    pub async fn delete(pool: &Pool<MySql>, id: i32) -> Result<MySqlQueryResult, sqlx::Error> {
         query("DELETE FROM products WHERE id = ?")
             .bind(id)
             .execute(pool)
@@ -47,7 +47,7 @@ impl ProductRepository {
     pub async fn updated(
         pool: &Pool<MySql>,
         product: Product,
-        id: u32,
+        id: i32,
     ) -> Result<MySqlQueryResult, sqlx::Error> {
         let mut query_builder = QueryBuilder::<MySql>::new("UPDATE product SET");
 
