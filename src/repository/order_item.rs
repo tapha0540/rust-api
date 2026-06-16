@@ -74,7 +74,7 @@ impl OrderItemRepository {
         if !has_fields {
             return Err(sqlx::Error::Protocol("Aucun champ fourni pour la mise à jour".into()));
         }
-        query_builder.push("WHERE id = ").push_bind(id);
+        query_builder.push(" WHERE id = ").push_bind(id);
         let query = query_builder.build();
         query.execute(pool).await
     }

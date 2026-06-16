@@ -88,7 +88,7 @@ impl ProductRepository {
             ));
         }
 
-        query_builder.push("WHERE id = ").push_bind(id);
+        query_builder.push(" WHERE id = ").push_bind(id);
         let query = query_builder.build();
         query.execute(pool).await
     }
