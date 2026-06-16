@@ -51,7 +51,7 @@ impl ProductRepository {
     ) -> Result<MySqlQueryResult, sqlx::Error> {
         let mut query_builder = QueryBuilder::<MySql>::new("UPDATE product SET");
 
-        let mut separated = query_builder.separated(",");
+        let mut separated = query_builder.separated(", ");
         let mut has_fields = false;
 
         if let Some(name) = product.name {
@@ -79,11 +79,13 @@ impl ProductRepository {
             separated.push("image_url = ").push_bind(image_url);
             has_fields = true;
         }
-        
+
         drop(separated);
 
         if !has_fields {
-            return Err(sqlx::Error::BeginFailed);
+            return Err(sqlx::Error::Protocol(
+                "Aucun champ fourni pour la mise à jour".into(),
+            ));
         }
 
         query_builder.push("WHERE id = ").push_bind(id);

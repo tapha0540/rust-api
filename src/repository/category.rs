@@ -49,7 +49,7 @@ impl CategoryRepository {
     ) -> Result<MySqlQueryResult, sqlx::Error> {
         let mut query_builder = QueryBuilder::<MySql>::new("UPDATE categories SET ");
 
-        let mut separated = query_builder.separated(",");
+        let mut separated = query_builder.separated(", ");
         let mut has_fields = false;
 
         if let Some(name) = category.name {
@@ -74,7 +74,9 @@ impl CategoryRepository {
         drop(separated);
 
         if !has_fields {
-            return Err(sqlx::Error::BeginFailed);
+            return Err(sqlx::Error::Protocol(
+                "Aucun champ fourni pour la mise à jour".into(),
+            ));
         }
 
         query_builder.push("WHERE id = ").push_bind(id);

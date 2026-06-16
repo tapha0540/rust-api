@@ -46,7 +46,7 @@ impl OrderRepository {
     ) -> Result<MySqlQueryResult, sqlx::Error> {
         let mut query_builder = QueryBuilder::new("UPDATE orders SET ");
 
-        let mut separated = query_builder.separated(",");
+        let mut separated = query_builder.separated(", ");
         let mut has_fields = false;
 
         if let Some(user_id) = order.user_id {
@@ -63,7 +63,9 @@ impl OrderRepository {
         }
 
         if !has_fields {
-            return Err(sqlx::Error::BeginFailed);
+            return Err(sqlx::Error::Protocol(
+                "Aucun champ fourni pour la mise à jour".into(),
+            ));
         }
 
         drop(separated);
