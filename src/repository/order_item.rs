@@ -53,26 +53,34 @@ impl OrderItemRepository {
         let mut has_fields = false;
 
         if let Some(order_id) = order_item.order_id {
-            separated.push("order_id = ").push_bind(order_id);
+            separated
+                .push("order_id = ")
+                .push_bind_unseparated(order_id);
             has_fields = true;
         }
         if let Some(product_id) = order_item.product_id {
-            separated.push("product_id = ").push_bind(product_id);
+            separated
+                .push("product_id = ")
+                .push_bind_unseparated(product_id);
             has_fields = true;
         }
         if let Some(quantity) = order_item.quantity {
-            separated.push("quantity = ").push_bind(quantity);
+            separated
+                .push("quantity = ")
+                .push_bind_unseparated(quantity);
             has_fields = true;
         }
         if let Some(price) = order_item.price {
-            separated.push("price = ").push_bind(price);
+            separated.push("price = ").push_bind_unseparated(price);
             has_fields = true;
         }
 
         drop(separated);
 
         if !has_fields {
-            return Err(sqlx::Error::Protocol("Aucun champ fourni pour la mise à jour".into()));
+            return Err(sqlx::Error::Protocol(
+                "Aucun champ fourni pour la mise à jour".into(),
+            ));
         }
         query_builder.push(" WHERE id = ").push_bind(id);
         let query = query_builder.build();

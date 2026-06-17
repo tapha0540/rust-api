@@ -54,35 +54,42 @@ impl UserRepository {
         let mut has_fields = false;
 
         if let Some(first_name) = user.first_name {
-            separated.push("first_name = ").push_bind(first_name);
+            separated
+                .push("first_name = ")
+                .push_bind_unseparated(first_name);
             has_fields = true;
         }
 
         if let Some(last_name) = user.last_name {
-            separated.push("last_name = ").push_bind(last_name);
+            separated
+                .push("last_name = ")
+                .push_bind_unseparated(last_name);
             has_fields = true;
         }
         if let Some(email) = user.email {
-            separated.push("email = ").push_bind(email);
+            separated.push("email = ").push_bind_unseparated(email);
             has_fields = true;
         }
         if let Some(password) = user.password {
-            separated.push("password = ").push_bind(password);
+            separated
+                .push("password = ")
+                .push_bind_unseparated(password);
             has_fields = true;
         }
         if let Some(role) = user.role {
-            separated.push("role = ").push_bind(role);
+            separated.push("role = ").push_bind_unseparated(role);
             has_fields = true;
         }
         if let Some(phone) = user.phone {
-            separated.push("phone = ").push_bind(phone);
+            separated.push("phone = ").push_bind_unseparated(phone);
             has_fields = true;
         }
         if let Some(profile_url) = user.profile_url {
-            separated.push("profile_url = ").push_bind(profile_url);
+            separated
+                .push("profile_url = ")
+                .push_bind_unseparated(profile_url);
             has_fields = true;
         }
-
 
         drop(separated);
 

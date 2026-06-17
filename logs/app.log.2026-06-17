@@ -1,0 +1,68 @@
+{"timestamp":"2026-06-17T18:55:41.341216Z","level":"INFO","fields":{"message":"Le système de log double (Console + Fichier) est prêt."},"target":"api"}
+{"timestamp":"2026-06-17T18:55:41.509543Z","level":"INFO","fields":{"message":"Test"},"target":"api"}
+{"timestamp":"2026-06-17T18:55:49.831788Z","level":"INFO","fields":{"message":"categories Found"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T18:55:57.527195Z","level":"ERROR","fields":{"message":"ColumnDecode { index: \"\\\"price\\\"\", source: \"mismatched types; Rust type `core::option::Option<f32>` (as SQL type `FLOAT`) is not compatible with SQL type `DECIMAL`\" }"},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T18:56:03.742675Z","level":"WARN","fields":{"message":"RowNotFound"},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T18:56:06.766791Z","level":"WARN","fields":{"message":"RowNotFound"},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T18:56:11.157431Z","level":"WARN","fields":{"message":"RowNotFound"},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T18:56:13.325618Z","level":"ERROR","fields":{"message":"ColumnDecode { index: \"\\\"price\\\"\", source: \"mismatched types; Rust type `core::option::Option<f32>` (as SQL type `FLOAT`) is not compatible with SQL type `DECIMAL`\" }"},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:06:27.324460Z","level":"INFO","fields":{"message":"Le système de log double (Console + Fichier) est prêt."},"target":"api"}
+{"timestamp":"2026-06-17T19:06:27.359511Z","level":"INFO","fields":{"message":"Test"},"target":"api"}
+{"timestamp":"2026-06-17T19:07:07.779687Z","level":"INFO","fields":{"message":"Products found."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:07:15.120595Z","level":"INFO","fields":{"message":"Product found."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:07:22.499939Z","level":"WARN","fields":{"message":"RowNotFound"},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:07:26.124009Z","level":"WARN","fields":{"message":"RowNotFound"},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:07:29.426286Z","level":"INFO","fields":{"message":"Product found."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:07:45.166677Z","level":"INFO","fields":{"message":"Products found."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:07:55.951233Z","level":"INFO","fields":{"message":"Products found."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:10:08.618399Z","level":"INFO","fields":{"message":"Products found."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:12:29.273510Z","level":"INFO","fields":{"message":"Your request to create a new category is successful."},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:12:34.791797Z","level":"INFO","fields":{"message":"Your request to create a new category is successful."},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:13:04.476667Z","level":"INFO","fields":{"message":"Your request to create a new category is successful."},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:13:16.677491Z","level":"INFO","fields":{"message":"categories Found"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:13:36.395283Z","level":"INFO","fields":{"message":"Your request to create a new category is successful."},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:13:46.144974Z","level":"INFO","fields":{"message":"categories Found"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:14:32.063511Z","level":"WARN","fields":{"message":"category not updated: id provided is null!"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:16:55.471711Z","level":"WARN","fields":{"message":"category not updated: id provided is null!"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:17:01.888968Z","level":"WARN","fields":{"message":"category not updated: id provided is null!"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:17:38.861030Z","level":"INFO","fields":{"message":"Le système de log double (Console + Fichier) est prêt."},"target":"api"}
+{"timestamp":"2026-06-17T19:17:38.896487Z","level":"INFO","fields":{"message":"Test"},"target":"api"}
+{"timestamp":"2026-06-17T19:17:48.334313Z","level":"ERROR","fields":{"message":"Database(MySqlDatabaseError { code: Some(\"42000\"), number: 1064, message: \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', ?, description = , ?, parent_id = , ?, icon_url = , ? WHERE id = ?' at line 1\" })"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:24:31.943616Z","level":"INFO","fields":{"message":"Le système de log double (Console + Fichier) est prêt."},"target":"api"}
+{"timestamp":"2026-06-17T19:24:31.982163Z","level":"INFO","fields":{"message":"Test"},"target":"api"}
+{"timestamp":"2026-06-17T19:24:51.082186Z","level":"ERROR","fields":{"message":"Database(MySqlDatabaseError { code: Some(\"42000\"), number: 1064, message: \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', ?, description = , ?, parent_id = , ?, icon_url = , ? WHERE id = ?' at line 1\" })"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:29:03.944307Z","level":"INFO","fields":{"message":"Le système de log double (Console + Fichier) est prêt."},"target":"api"}
+{"timestamp":"2026-06-17T19:29:03.975485Z","level":"INFO","fields":{"message":"Test"},"target":"api"}
+{"timestamp":"2026-06-17T19:29:08.605152Z","level":"INFO","fields":{"message":"A category was updated from database."},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:29:12.763651Z","level":"INFO","fields":{"message":"categories Found"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:29:35.531811Z","level":"INFO","fields":{"message":"A category was updated from database."},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:29:38.684406Z","level":"INFO","fields":{"message":"categories Found"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:29:49.456075Z","level":"ERROR","fields":{"message":"Database(MySqlDatabaseError { code: Some(\"23000\"), number: 1452, message: \"Cannot add or update a child row: a foreign key constraint fails (`ecommerce`.`categories`, CONSTRAINT `fk_category_parent` FOREIGN KEY (`parent_id`) REFERENCES `categories` (`id`))\" })"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:30:10.730373Z","level":"INFO","fields":{"message":"A category was updated from database."},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:39:14.627212Z","level":"INFO","fields":{"message":"A category was updated from database."},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:39:27.438205Z","level":"INFO","fields":{"message":"A category was deleted from the table categories."},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:39:34.815877Z","level":"INFO","fields":{"message":"categories Found"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:39:45.866843Z","level":"INFO","fields":{"message":"A category was deleted from the table categories."},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:39:49.223757Z","level":"INFO","fields":{"message":"categories Found"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:40:16.806092Z","level":"WARN","fields":{"message":"the id provided to delete a Category did not exist in the table"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:40:50.746435Z","level":"INFO","fields":{"message":"Category found"},"target":"api::handlers::category"}
+{"timestamp":"2026-06-17T19:41:11.120389Z","level":"INFO","fields":{"message":"Products found."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:41:22.709202Z","level":"INFO","fields":{"message":"Product found."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:41:28.901524Z","level":"WARN","fields":{"message":"RowNotFound"},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:42:18.508360Z","level":"INFO","fields":{"message":"Products found."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:42:21.497085Z","level":"INFO","fields":{"message":"Product found."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:42:32.359458Z","level":"INFO","fields":{"message":"Product found."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:42:39.573524Z","level":"INFO","fields":{"message":"Product found."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:43:56.678745Z","level":"WARN","fields":{"message":"Verify your request body to create a new product because some variables are missing."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:44:03.270611Z","level":"WARN","fields":{"message":"Verify your request body to create a new product because some variables are missing."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:44:27.655274Z","level":"WARN","fields":{"message":"Verify your request body to create a new product because some variables are missing."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:44:30.765971Z","level":"WARN","fields":{"message":"Verify your request body to create a new product because some variables are missing."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:44:41.447126Z","level":"INFO","fields":{"message":"Request to create a new Product was successful."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:46:33.617493Z","level":"INFO","fields":{"message":"Products found."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:46:55.584036Z","level":"WARN","fields":{"message":"Product not updated: id provided is null!"},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:47:04.801889Z","level":"INFO","fields":{"message":"Products found."},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:47:17.298486Z","level":"WARN","fields":{"message":"Product not updated: id provided is null!"},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:48:57.887212Z","level":"INFO","fields":{"message":"Le système de log double (Console + Fichier) est prêt."},"target":"api"}
+{"timestamp":"2026-06-17T19:48:57.903352Z","level":"INFO","fields":{"message":"Test"},"target":"api"}
+{"timestamp":"2026-06-17T19:49:01.363542Z","level":"ERROR","fields":{"message":"Database(MySqlDatabaseError { code: Some(\"42000\"), number: 1064, message: \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= ?, description = ?, price = ?, stock = ?, category_id = ?, image_url = ? WHERE' at line 1\" })"},"target":"api::handlers::product"}
+{"timestamp":"2026-06-17T19:50:09.057124Z","level":"ERROR","fields":{"message":"Database(MySqlDatabaseError { code: Some(\"42000\"), number: 1064, message: \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= ?, description = ?, price = ?, stock = ?, category_id = ?, image_url = ? WHERE' at line 1\" })"},"target":"api::handlers::product"}

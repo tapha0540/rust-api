@@ -1,4 +1,5 @@
 use chrono::{DateTime, Utc};
+use rust_decimal::Decimal;
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum OrderStatus {
@@ -39,7 +40,7 @@ pub struct Order {
     pub id: Option<i32>,
     pub user_id: Option<i32>,
     pub status: Option<String>,
-    pub total: Option<f32>,
+    pub total: Option<Decimal>,
     pub created_at: Option<DateTime<Utc>>,
     pub updated_at: Option<DateTime<Utc>>,
 }

@@ -52,25 +52,28 @@ impl CategoryRepository {
         let mut separated = query_builder.separated(", ");
         let mut has_fields = false;
 
+        // IMPORTANT : On pousse "colonne = " ET on lie la valeur dans la même expression de séparation
         if let Some(name) = category.name {
-            separated.push("name = ").push_bind(name);
+            separated.push("name = ").push_bind_unseparated(name);
             has_fields = true;
         }
 
         if let Some(description) = category.description {
-            separated.push("description = ").push_bind(description);
+            separated.push("description = ").push_bind_unseparated(description);
             has_fields = true;
         }
 
         if let Some(parent_id) = category.parent_id {
-            separated.push("parent_id = ").push_bind(parent_id);
+            separated.push("parent_id = ").push_bind_unseparated(parent_id);
             has_fields = true;
         }
 
         if let Some(icon_url) = category.icon_url {
-            separated.push("icon_url = ").push_bind(icon_url);
+            separated.push("icon_url = ").push_bind_unseparated(icon_url);
             has_fields = true;
         }
+
+        // On ferme explicitement le gestionnaire de séparation avant d'ajouter le WHERE
         drop(separated);
 
         if !has_fields {
@@ -79,7 +82,9 @@ impl CategoryRepository {
             ));
         }
 
+        // Ajout de la clause WHERE avec les espaces nécessaires autour des mots-clés
         query_builder.push(" WHERE id = ").push_bind(id);
+
         let query = query_builder.build();
         query.execute(pool).await
     }

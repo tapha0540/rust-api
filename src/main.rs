@@ -4,13 +4,13 @@ mod middlewares;
 mod models;
 mod repository;
 mod routes;
-mod utils;
 mod tests;
 mod types;
+mod utils;
 
 use axum::Router;
-use tracing::info;
 use std::env;
+use tracing::info;
 use tracing_appender::non_blocking::WorkerGuard;
 use tracing_subscriber::{
     EnvFilter, Registry,
@@ -19,7 +19,7 @@ use tracing_subscriber::{
     util::SubscriberInitExt,
 };
 
-use crate::{database::connect_db, types::AppState};
+use crate::{database::connect_db, types::AppState, utils::cors::get_cors};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
@@ -36,7 +36,10 @@ async fn main() {
     let app = Router::new()
         .nest("/auth", routes::auth::routes())
         .nest("/categories", routes::category::routes())
-        .with_state(state);
+        .nest("/products", routes::products::routes())
+        .with_state(state)
+        // .layer(get_cors())
+        .layer(get_cors());
 
     let listener = tokio::net::TcpListener::bind(
         env::var("ADDR").expect("The environment variable addr is not set"),

@@ -1,3 +1,4 @@
+use rust_decimal::Decimal;
 use sqlx::{MySql, Pool, QueryBuilder, mysql::MySqlQueryResult, query, query_as};
 
 use crate::models::product::Product;
@@ -9,7 +10,7 @@ impl ProductRepository {
         pool: &Pool<MySql>,
         name: String,
         description: String,
-        price: f32,
+        price: Decimal,
         stock: i32,
         category_id: i16,
         image_url: String,
@@ -45,51 +46,69 @@ impl ProductRepository {
     }
 
     pub async fn update(
-        pool: &Pool<MySql>,
-        product: Product,
-        id: i32,
-    ) -> Result<MySqlQueryResult, sqlx::Error> {
-        let mut query_builder = QueryBuilder::<MySql>::new("UPDATE product SET");
+    pool: &Pool<MySql>,
+    product: Product,
+    id: i32,
+) -> Result<MySqlQueryResult, sqlx::Error> {
+    // Notez l'espace après SET pour éviter les collages de chaînes
+    let mut query_builder = QueryBuilder::<MySql>::new("UPDATE products SET ");
 
-        let mut separated = query_builder.separated(", ");
-        let mut has_fields = false;
+    let mut separated = query_builder.separated(", ");
+    let mut has_fields = false;
 
-        if let Some(name) = product.name {
-            separated.push("name = ").push_bind(name);
-            has_fields = true;
-        }
-
-        if let Some(description) = product.description {
-            separated.push("description = ").push_bind(description);
-            has_fields = true;
-        }
-        if let Some(price) = product.price {
-            separated.push("price = ").push_bind(price);
-            has_fields = true;
-        }
-        if let Some(stock) = product.stock {
-            separated.push("stock = ").push_bind(stock);
-            has_fields = true;
-        }
-        if let Some(category_id) = product.category_id {
-            separated.push("category_id = ").push_bind(category_id);
-            has_fields = true;
-        }
-        if let Some(image_url) = product.image_url {
-            separated.push("image_url = ").push_bind(image_url);
-            has_fields = true;
-        }
-
-        drop(separated);
-
-        if !has_fields {
-            return Err(sqlx::Error::Protocol(
-                "Aucun champ fourni pour la mise à jour".into(),
-            ));
-        }
-
-        query_builder.push(" WHERE id = ").push_bind(id);
-        let query = query_builder.build();
-        query.execute(pool).await
+    if let Some(name) = product.name {
+        separated.push("name");
+        separated.push_unseparated(" = ");
+        separated.push_bind_unseparated(name);
+        has_fields = true;
     }
+
+    if let Some(description) = product.description {
+        separated.push("description");
+        separated.push_unseparated(" = ");
+        separated.push_bind_unseparated(description);
+        has_fields = true;
+    }
+
+    if let Some(price) = product.price {
+        separated.push("price");
+        separated.push_unseparated(" = ");
+        separated.push_bind_unseparated(price);
+        has_fields = true;
+    }
+
+    if let Some(stock) = product.stock {
+        separated.push("stock");
+        separated.push_unseparated(" = ");
+        separated.push_bind_unseparated(stock);
+        has_fields = true;
+    }
+
+    if let Some(category_id) = product.category_id {
+        separated.push("category_id");
+        separated.push_unseparated(" = ");
+        separated.push_bind_unseparated(category_id);
+        has_fields = true;
+    }
+
+    if let Some(image_url) = product.image_url {
+        separated.push("image_url");
+        separated.push_unseparated(" = ");
+        separated.push_bind_unseparated(image_url);
+        has_fields = true;
+    }
+
+    drop(separated);
+
+    if !has_fields {
+        return Err(sqlx::Error::Protocol(
+            "Aucun champ fourni pour la mise à jour".into(),
+        ));
+    }
+
+    query_builder.push(" WHERE id = ").push_bind(id);
+    let query = query_builder.build();
+    query.execute(pool).await
+}
+
 }

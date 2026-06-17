@@ -61,14 +61,14 @@ impl ProductHandler {
                 info!("Request to create a new Product was successful.");
                 (
                     StatusCode::CREATED,
-                    Json(ApiResponse::new("", Some(res.last_insert_id()))),
+                    Json(ApiResponse::new("Product created", Some(res.last_insert_id()))),
                 )
             }
             Err(err) => {
                 error!("{:?}", err);
                 (
                     StatusCode::INTERNAL_SERVER_ERROR,
-                    Json(ApiResponse::new("message", None)),
+                    Json(ApiResponse::new("Server Error", None)),
                 )
             }
         }
@@ -120,18 +120,9 @@ impl ProductHandler {
     }
     pub async fn update(
         State(state): State<AppState>,
+        Path(id): Path<i32>,
         Json(payload): Json<Product>,
     ) -> (StatusCode, Json<ApiResponse<i32>>) {
-        let Some(id) = payload.id else {
-            warn!("Product not updated: id provided is null!");
-            return (
-                StatusCode::NOT_ACCEPTABLE,
-                Json(ApiResponse::new(
-                    "Your request does not provide the id of a specific product.",
-                    None,
-                )),
-            );
-        };
         match ProductRepository::update(&state.db, payload, id).await {
             Ok(res) => {
                 if res.rows_affected() == 0u64 {
@@ -181,7 +172,7 @@ impl ProductHandler {
                         )),
                     )
                 } else {
-                    info!("A Product was deleted from the table categories.");
+                    info!("A Product was deleted.");
                     let id = res.last_insert_id();
                     (
                         StatusCode::OK,

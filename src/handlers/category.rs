@@ -101,18 +101,19 @@ impl CategoryHandler {
 
     pub async fn update(
         State(state): State<AppState>,
+        Path(id): Path<i32>,
         Json(payload): Json<Category>,
     ) -> (StatusCode, Json<ApiResponse<i32>>) {
-        let Some(id) = payload.id else {
-            warn!("category not updated: id provided is null!");
-            return (
-                StatusCode::NOT_ACCEPTABLE,
-                Json(ApiResponse::new(
-                    "Your request does not provide the id of a specific category.",
-                    None,
-                )),
-            );
-        };
+        // let Some(id) = payload.id else {
+        //     warn!("category not updated: id provided is null!");
+        //     return (
+        //         StatusCode::NOT_ACCEPTABLE,
+        //         Json(ApiResponse::new(
+        //             "Your request does not provide the id of a specific category.",
+        //             None,
+        //         )),
+        //     );
+        // };
 
         match CategoryRepository::update(&state.db, payload, id).await {
             Ok(res) => {

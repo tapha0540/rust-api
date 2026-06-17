@@ -1,5 +1,4 @@
-use axum::http::status;
-use sqlx::{MySql, Pool, QueryBuilder, mysql::MySqlQueryResult, query, query_as, query_builder};
+use sqlx::{MySql, Pool, QueryBuilder, mysql::MySqlQueryResult, query, query_as};
 
 use crate::models::order::{Order, OrderStatus};
 
@@ -23,6 +22,7 @@ impl OrderRepository {
         query_as::<MySql, Order>(
             "SELECT id, user_id, status, total, created_at, updated_at FROM orders WHERE id = ?",
         )
+        .bind(id)
         .fetch_one(pool)
         .await
     }
@@ -50,15 +50,15 @@ impl OrderRepository {
         let mut has_fields = false;
 
         if let Some(user_id) = order.user_id {
-            separated.push("user_id = ").push_bind(user_id);
+            separated.push("user_id = ").push_bind_unseparated(user_id);
             has_fields = true;
         }
         if let Some(status) = order.status {
-            separated.push("status = ").push_bind(status);
+            separated.push("status = ").push_bind_unseparated(status);
             has_fields = true;
         }
         if let Some(total) = order.total {
-            separated.push("total = ").push_bind(total);
+            separated.push("total = ").push_bind_unseparated(total);
             has_fields = true;
         }
 

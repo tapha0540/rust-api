@@ -1,4 +1,4 @@
-use sqlx::{MySql, Pool, mysql::MySqlQueryResult, query, query_as};
+use sqlx::{MySql, Pool, QueryBuilder, mysql::MySqlQueryResult, query, query_as};
 
 use crate::models::review::Review;
 
@@ -26,5 +26,45 @@ impl ReviewRepository {
             .bind(id)
             .execute(pool)
             .await
+    }
+    pub async fn update(
+        pool: &Pool<MySql>,
+        review: Review,
+        id: i32,
+    ) -> Result<MySqlQueryResult, sqlx::Error> {
+        let mut query_builder = QueryBuilder::<MySql>::new("UPDATE reviews SET");
+
+        let mut separated = query_builder.separated(", ");
+        let mut has_fields = false;
+
+        if let Some(product_id) = review.product_id {
+            separated.push("product_id = ").push_bind_unseparated(product_id);
+            has_fields = true;
+        }
+        if let Some(user_id) = review.user_id {
+            separated.push("user_id = ").push_bind_unseparated(user_id);
+            has_fields = true;
+        }
+
+        if let Some(rating) = review.rating {
+            separated.push("rating = ").push_bind_unseparated(rating);
+            has_fields = true;
+        }
+        if let Some(comment) = review.comment {
+            separated.push("comment = ").push_bind_unseparated(comment);
+            has_fields = true;
+        }
+
+        drop(separated);
+
+        if !has_fields {
+            return Err(sqlx::Error::Protocol(
+                "Aucun champ fourni pour la mise à jour".into(),
+            ));
+        }
+
+        query_builder.push(" WHERE id = ").push_bind(id);
+        let query = query_builder.build();
+        query.execute(pool).await
     }
 }

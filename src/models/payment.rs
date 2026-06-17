@@ -1,4 +1,5 @@
 use chrono::{DateTime, Utc};
+use rust_decimal::Decimal;
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum PaymentMethod {
@@ -63,7 +64,7 @@ impl PaymentStatus {
 pub struct Payment {
     pub id: Option<i32>,
     pub order_id: Option<i32>,
-    pub amount: Option<f32>,
+    pub amount: Option<Decimal>,
     pub method: Option<String>,
     pub status: Option<String>,
     pub created_at: Option<DateTime<Utc>>,
