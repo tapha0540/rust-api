@@ -44,7 +44,7 @@ impl ProductRepository {
             .await
     }
 
-    pub async fn updated(
+    pub async fn update(
         pool: &Pool<MySql>,
         product: Product,
         id: i32,
