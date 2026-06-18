@@ -13,25 +13,56 @@ impl UserRepository {
         password: String,
         role: UserRole,
         phone: String,
-        profile_url: String,
     ) -> Result<MySqlQueryResult, sqlx::Error> {
-        query("INSERT INTO users(first_name, last_name, email, password, role, phone, profile_url) VALUES (?, ?, ?, ?, ?, ?, ?)")
+        query("INSERT INTO users(first_name, last_name, email, password, role, phone) VALUES (?, ?, ?, ?, ?, ?)")
         .bind(first_name)
         .bind(last_name)
         .bind(email)
         .bind(password)
         .bind(role.as_str())
         .bind(phone)
-        .bind(profile_url)
         .execute(pool).await
     }
 
-    pub async fn find_by_id(pool: &Pool<MySql>, id: i32) -> Result<User, sqlx::Error> {
-        query_as::<_, User>("SELECT id, first_name, last_name, email, password, role, phone, profile_url, created_at, updated_at FROM users WHERE id = ?")
-        .bind(id)
-        .fetch_one(pool)
-        .await
+    pub async fn find(
+        pool: &Pool<MySql>,
+        id: Option<i32>,
+        email: Option<String>,
+        phone: Option<String>,
+    ) -> Result<User, sqlx::Error> {
+        // 1. Validate that at least one search criteria is provided upfront
+        if id.is_none() && email.is_none() && phone.is_none() {
+            return Err(sqlx::Error::Protocol(
+                "id, email, and phone cannot all be None.".to_string(),
+            ));
+        }
+
+        let mut query_builder = QueryBuilder::new(
+            "SELECT id, first_name, last_name, email, password, role, phone, profile_url, created_at, updated_at FROM users WHERE ",
+        );
+
+        // 2. Create the separated builder for dynamic OR conditions
+        let mut separated = query_builder.separated(" OR ");
+
+        if let Some(user_id) = id {
+            separated.push("id = ").push_bind_unseparated(user_id);
+        }
+
+        if let Some(user_email) = email {
+            separated.push("email = ").push_bind_unseparated(user_email);
+        }
+
+        if let Some(user_phone) = phone {
+            separated.push("phone = ").push_bind_unseparated(user_phone);
+        }
+
+        // 3. Drop the separated helper to release the borrow on query_builder
+        drop(separated);
+
+        // 4. Execute the query
+        query_builder.build_query_as::<User>().fetch_one(pool).await
     }
+
     pub async fn find_all(pool: &Pool<MySql>) -> Result<Vec<User>, sqlx::Error> {
         query_as::<_, User>("SELECT id, first_name, last_name, email, password, role, phone, profile_url, created_at, updated_at FROM users")
         .fetch_all(pool)

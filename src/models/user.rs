@@ -12,7 +12,7 @@ impl UserRole {
             "admin" => Some(Self::Admin),
             "customer" => Some(Self::Customer),
             _ => {
-                dbg!("Invalide role value");
+                tracing::error!("Invalide role value");
                 None
             }
         }

@@ -54,22 +54,34 @@ impl CategoryRepository {
 
         // IMPORTANT : On pousse "colonne = " ET on lie la valeur dans la même expression de séparation
         if let Some(name) = category.name {
-            separated.push("name = ").push_bind_unseparated(name);
+            separated
+                .push("name")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(name);
             has_fields = true;
         }
 
         if let Some(description) = category.description {
-            separated.push("description = ").push_bind_unseparated(description);
+            separated
+                .push("description")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(description);
             has_fields = true;
         }
 
         if let Some(parent_id) = category.parent_id {
-            separated.push("parent_id = ").push_bind_unseparated(parent_id);
+            separated
+                .push("parent_id")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(parent_id);
             has_fields = true;
         }
 
         if let Some(icon_url) = category.icon_url {
-            separated.push("icon_url = ").push_bind_unseparated(icon_url);
+            separated
+                .push("icon_url")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(icon_url);
             has_fields = true;
         }
 
