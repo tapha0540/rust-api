@@ -17,7 +17,7 @@ impl UserRole {
             }
         }
     }
-    pub fn as_str(&self) -> String {
+    pub fn to_string(&self) -> String {
         match self {
             Self::Customer => "customer".to_string(),
             Self::Admin => "admin".to_string(),

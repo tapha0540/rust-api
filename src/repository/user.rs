@@ -11,7 +11,7 @@ impl UserRepository {
         last_name: String,
         email: String,
         password: String,
-        role: UserRole,
+        role: &UserRole,
         phone: String,
     ) -> Result<MySqlQueryResult, sqlx::Error> {
         query("INSERT INTO users(first_name, last_name, email, password, role, phone) VALUES (?, ?, ?, ?, ?, ?)")
@@ -19,7 +19,7 @@ impl UserRepository {
         .bind(last_name)
         .bind(email)
         .bind(password)
-        .bind(role.as_str())
+        .bind(role.to_string())
         .bind(phone)
         .execute(pool).await
     }
