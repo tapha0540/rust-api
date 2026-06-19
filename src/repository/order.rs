@@ -50,15 +50,24 @@ impl OrderRepository {
         let mut has_fields = false;
 
         if let Some(user_id) = order.user_id {
-            separated.push("user_id = ").push_bind_unseparated(user_id);
+            separated
+                .push("user_id")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(user_id);
             has_fields = true;
         }
         if let Some(status) = order.status {
-            separated.push("status = ").push_bind_unseparated(status);
+            separated
+                .push("status")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(status);
             has_fields = true;
         }
         if let Some(total) = order.total {
-            separated.push("total = ").push_bind_unseparated(total);
+            separated
+                .push("total")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(total);
             has_fields = true;
         }
 

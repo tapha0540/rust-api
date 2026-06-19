@@ -54,24 +54,30 @@ impl OrderItemRepository {
 
         if let Some(order_id) = order_item.order_id {
             separated
-                .push("order_id = ")
+                .push("order_id")
+                .push_unseparated(" = ")
                 .push_bind_unseparated(order_id);
             has_fields = true;
         }
         if let Some(product_id) = order_item.product_id {
             separated
-                .push("product_id = ")
+                .push("product_id")
+                .push_unseparated(" = ")
                 .push_bind_unseparated(product_id);
             has_fields = true;
         }
         if let Some(quantity) = order_item.quantity {
             separated
-                .push("quantity = ")
+                .push("quantity")
+                .push_unseparated(" = ")
                 .push_bind_unseparated(quantity);
             has_fields = true;
         }
         if let Some(price) = order_item.price {
-            separated.push("price = ").push_bind_unseparated(price);
+            separated
+                .push("price")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(price);
             has_fields = true;
         }
 

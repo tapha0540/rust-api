@@ -79,45 +79,58 @@ impl UserRepository {
         user: User,
         id: i32,
     ) -> Result<MySqlQueryResult, sqlx::Error> {
-        let mut query_builder = QueryBuilder::<MySql>::new("UPDATE users SET");
+        let mut query_builder = QueryBuilder::<MySql>::new("UPDATE users SET ");
 
         let mut separated = query_builder.separated(", ");
         let mut has_fields = false;
 
         if let Some(first_name) = user.first_name {
             separated
-                .push("first_name = ")
+                .push("first_name")
+                .push_unseparated(" = ")
                 .push_bind_unseparated(first_name);
             has_fields = true;
         }
 
         if let Some(last_name) = user.last_name {
             separated
-                .push("last_name = ")
+                .push("last_name")
+                .push_unseparated(" = ")
                 .push_bind_unseparated(last_name);
             has_fields = true;
         }
         if let Some(email) = user.email {
-            separated.push("email = ").push_bind_unseparated(email);
+            separated
+                .push("email")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(email);
             has_fields = true;
         }
         if let Some(password) = user.password {
             separated
-                .push("password = ")
+                .push("password")
+                .push_unseparated(" = ")
                 .push_bind_unseparated(password);
             has_fields = true;
         }
         if let Some(role) = user.role {
-            separated.push("role = ").push_bind_unseparated(role);
+            separated
+                .push("role")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(role);
             has_fields = true;
         }
         if let Some(phone) = user.phone {
-            separated.push("phone = ").push_bind_unseparated(phone);
+            separated
+                .push("phone")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(phone);
             has_fields = true;
         }
         if let Some(profile_url) = user.profile_url {
             separated
-                .push("profile_url = ")
+                .push("profile_url")
+                .push_unseparated(" = ")
                 .push_bind_unseparated(profile_url);
             has_fields = true;
         }

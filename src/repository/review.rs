@@ -27,7 +27,9 @@ impl ReviewRepository {
         .await
     }
     pub async fn find_all(pool: &Pool<MySql>) -> Result<Vec<Review>, sqlx::Error> {
-        query_as::<_, Review>("SELECT id, product_id, user_id, rating, comment, created_at, updated_at FROM reviews")
+        query_as::<_, Review>(
+            "SELECT id, product_id, user_id, rating, comment, created_at, updated_at FROM reviews",
+        )
         .fetch_all(pool)
         .await
     }
@@ -42,28 +44,38 @@ impl ReviewRepository {
         review: Review,
         id: i32,
     ) -> Result<MySqlQueryResult, sqlx::Error> {
-        let mut query_builder = QueryBuilder::<MySql>::new("UPDATE reviews SET");
+        let mut query_builder = QueryBuilder::<MySql>::new("UPDATE reviews SET ");
 
         let mut separated = query_builder.separated(", ");
         let mut has_fields = false;
 
         if let Some(product_id) = review.product_id {
             separated
-                .push("product_id = ")
+                .push("product_id")
+                .push_unseparated(" = ")
                 .push_bind_unseparated(product_id);
             has_fields = true;
         }
         if let Some(user_id) = review.user_id {
-            separated.push("user_id = ").push_bind_unseparated(user_id);
+            separated
+                .push("user_id")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(user_id);
             has_fields = true;
         }
 
         if let Some(rating) = review.rating {
-            separated.push("rating = ").push_bind_unseparated(rating);
+            separated
+                .push("rating")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(rating);
             has_fields = true;
         }
         if let Some(comment) = review.comment {
-            separated.push("comment = ").push_bind_unseparated(comment);
+            separated
+                .push("comment")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(comment);
             has_fields = true;
         }
 

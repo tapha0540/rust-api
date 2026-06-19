@@ -56,20 +56,32 @@ impl PaymentRepository {
         let mut has_fields = false;
 
         if let Some(order_id) = payment.order_id {
-            separated.push("order_id = ").push_bind_unseparated(order_id);
+            separated
+                .push("order_id")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(order_id);
             has_fields = true;
         }
 
         if let Some(amount) = payment.amount {
-            separated.push("amount = ").push_bind_unseparated(amount);
+            separated
+                .push("amount")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(amount);
             has_fields = true;
         }
         if let Some(method) = payment.method {
-            separated.push("method = ").push_bind_unseparated(method);
+            separated
+                .push("method")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(method);
             has_fields = true;
         }
         if let Some(status) = payment.status {
-            separated.push("status = ").push_bind_unseparated(status);
+            separated
+                .push("status")
+                .push_unseparated(" = ")
+                .push_bind_unseparated(status);
             has_fields = true;
         }
 
