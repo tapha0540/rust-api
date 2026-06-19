@@ -1,3 +1,4 @@
+use rust_decimal::Decimal;
 use sqlx::{MySql, Pool, QueryBuilder, mysql::MySqlQueryResult, query, query_as};
 
 use crate::models::payment::{Payment, PaymentMethod, PaymentStatus};
@@ -8,7 +9,7 @@ impl PaymentRepository {
     pub async fn insert(
         pool: &Pool<MySql>,
         order_id: i32,
-        amount: f32,
+        amount: Decimal,
         method: PaymentMethod,
         status: PaymentStatus,
     ) -> Result<MySqlQueryResult, sqlx::Error> {

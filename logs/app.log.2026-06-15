@@ -1,6 +1,0 @@
-{"timestamp":"2026-06-15T23:08:38.223862Z","level":"INFO","fields":{"message":"Le système de log double (Console + Fichier) est prêt."},"target":"api"}
-{"timestamp":"2026-06-15T23:08:38.273717Z","level":"INFO","fields":{"message":"Test"},"target":"api"}
-{"timestamp":"2026-06-15T23:09:27.078046Z","level":"ERROR","fields":{"message":"ColumnDecode { index: \"\\\"id\\\"\", source: \"mismatched types; Rust type `core::option::Option<u32>` (as SQL type `INT UNSIGNED`) is not compatible with SQL type `INT`\" }"},"target":"api::handlers::category"}
-{"timestamp":"2026-06-15T23:09:27.536443Z","level":"ERROR","fields":{"message":"ColumnDecode { index: \"\\\"id\\\"\", source: \"mismatched types; Rust type `core::option::Option<u32>` (as SQL type `INT UNSIGNED`) is not compatible with SQL type `INT`\" }"},"target":"api::handlers::category"}
-{"timestamp":"2026-06-15T23:17:45.420117Z","level":"INFO","fields":{"message":"Le système de log double (Console + Fichier) est prêt."},"target":"api"}
-{"timestamp":"2026-06-15T23:17:45.449549Z","level":"INFO","fields":{"message":"Test"},"target":"api"}

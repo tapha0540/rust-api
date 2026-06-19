@@ -1,16 +1,26 @@
 use sqlx::{MySql, Pool, QueryBuilder, mysql::MySqlQueryResult, query, query_as};
 
-use crate::models::review::Review;
+use crate::models::{review::Review, user};
 
 pub struct ReviewRepository;
 
 impl ReviewRepository {
-    pub async fn insert(pool: &Pool<MySql>) -> Result<MySqlQueryResult, sqlx::Error> {
+    pub async fn insert(
+        pool: &Pool<MySql>,
+        product_id: i32,
+        user_id: i32,
+        rating: i8,
+        comment: String,
+    ) -> Result<MySqlQueryResult, sqlx::Error> {
         query("INSERT INTO reviews(product_id, user_id, rating, comment) VALUES (?, ?, ?, ?)")
+            .bind(product_id)
+            .bind(user_id)
+            .bind(rating)
+            .bind(comment)
             .execute(pool)
             .await
     }
-    pub async fn find_by_ids(pool: &Pool<MySql>, id: i32) -> Result<Review, sqlx::Error> {
+    pub async fn find_by_id(pool: &Pool<MySql>, id: i32) -> Result<Review, sqlx::Error> {
         query_as::<_, Review>("SELECT id, product_id, user_id, rating, comment, created_at, updated_at FROM reviews WHERE id = ?")
         .bind(id)
         .fetch_one(pool)
@@ -38,7 +48,9 @@ impl ReviewRepository {
         let mut has_fields = false;
 
         if let Some(product_id) = review.product_id {
-            separated.push("product_id = ").push_bind_unseparated(product_id);
+            separated
+                .push("product_id = ")
+                .push_bind_unseparated(product_id);
             has_fields = true;
         }
         if let Some(user_id) = review.user_id {
