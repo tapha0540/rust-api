@@ -61,7 +61,7 @@ impl Handler<Product> for ProductHandler {
             Ok(res) => {
                 info!("Request to create a new Product was successful.");
                 (
-                    StatusCode::CREATED,
+                    StatusCode::OK,
                     Json(ApiResponse::new(
                         "Product created",
                         Some(res.last_insert_id() as u32),

@@ -34,8 +34,8 @@ pub struct User {
     pub role: Option<String>,
     pub phone: Option<String>,
     pub profile_url: Option<String>,
-    pub created_at: DateTime<Utc>,
-    pub updated_at: DateTime<Utc>,
+    pub created_at: Option<DateTime<Utc>>,
+    pub updated_at: Option<DateTime<Utc>>,
 }
 
 impl User {

@@ -29,6 +29,7 @@ async fn main() {
 
     let app = Router::new()
         .nest("/auth", routes::auth::routes())
+        .nest("/users", routes::user::routes())
         .nest("/categories", routes::category::routes())
         .nest("/products", routes::product::routes())
         .nest("/reviews", routes::review::routes())

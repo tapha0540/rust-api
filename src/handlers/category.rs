@@ -37,7 +37,7 @@ impl Handler<Category> for CategoryHandler {
             Ok(res) => {
                 info!("Your request to create a new category is successful.");
                 (
-                    StatusCode::CREATED,
+                    StatusCode::OK,
                     Json(ApiResponse::new(
                         "Category created.",
                         Some(res.last_insert_id() as u32),

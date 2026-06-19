@@ -14,26 +14,17 @@ use crate::{
 pub struct AuthHandler;
 
 impl AuthHandler {
-    pub async fn register(
+    pub async fn sign_in(
         State(state): State<AppState>,
         Json(payload): Json<User>,
     ) -> (StatusCode, Json<ApiResponse<String>>) {
-        let (
-            Some(first_name),
-            Some(last_name),
-            Some(email),
-            Some(phone),
-            Some(role_as_str),
-            Some(password),
-        ) = (
+        let (Some(first_name), Some(last_name), Some(email), Some(phone), Some(password)) = (
             payload.first_name,
             payload.last_name,
             payload.email,
             payload.phone,
-            payload.role,
             payload.password,
-        )
-        else {
+        ) else {
             warn!("Request to /users/login failed because some params are missing.");
             return (
                 StatusCode::NOT_ACCEPTABLE,
@@ -70,7 +61,7 @@ impl AuthHandler {
             );
         }
 
-        let role = UserRole::new(role_as_str).unwrap_or(UserRole::Customer);
+        let role = UserRole::Customer;
         let hash = password_hash(password.as_bytes());
 
         match UserRepository::insert(&state.db, first_name, last_name, email, hash, &role, phone)

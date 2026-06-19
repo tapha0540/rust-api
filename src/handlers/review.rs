@@ -41,7 +41,7 @@ impl Handler<Review> for ReviewHandler {
             Ok(res) => {
                 info!("Request to create a new Review was successful.");
                 (
-                    StatusCode::CREATED,
+                    StatusCode::OK,
                     Json(ApiResponse::new(
                         "Review created",
                         Some(res.last_insert_id() as u32),
