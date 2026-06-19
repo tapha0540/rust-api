@@ -1,10 +1,11 @@
 use std::env;
 
 use chrono::Utc;
-use jsonwebtoken::{DecodingKey, EncodingKey, Header, Validation, encode, jws::decode};
+use jsonwebtoken::{DecodingKey, EncodingKey, Header, encode};
 use serde::{Deserialize, Serialize};
+use tracing::error;
 
-use crate::models::user::{User, UserRole};
+use crate::models::user::UserRole;
 
 const ONE_MONTH: i64 = 60 * 60 * 24 * 30;
 
@@ -45,7 +46,7 @@ pub fn get_token(user_id: i32, user_role: UserRole) -> Option<String> {
     match encode(&Header::default(), &my_claims, &get_encoding_key()) {
         Ok(val) => Some(val),
         Err(err) => {
-            tracing::error!("{:?}", err);
+            error!("{:?}", err);
             None
         }
     }

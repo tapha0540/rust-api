@@ -6,18 +6,16 @@ use axum::{
 use tracing::{error, info, warn};
 
 use crate::{
-    models::category::Category,
-    repository::category::CategoryRepository,
-    types::{ApiResponse, AppState},
+    handlers::Handler, models::category::Category, repository::category::CategoryRepository, types::{ApiResponse, AppState}
 };
 
 pub struct CategoryHandler;
 
-impl CategoryHandler {
-    pub async fn create(
+impl Handler<Category> for CategoryHandler {
+    async fn create(
         State(state): State<AppState>,
         Json(payload): Json<Category>,
-    ) -> (StatusCode, Json<ApiResponse<u64>>) {
+    ) -> (StatusCode, Json<ApiResponse<u32>>) {
         let (Some(name), Some(description), Some(icon_url)) =
             (payload.name, payload.description, payload.icon_url)
         else {
@@ -42,7 +40,7 @@ impl CategoryHandler {
                     StatusCode::CREATED,
                     Json(ApiResponse::new(
                         "Category created.",
-                        Some(res.last_insert_id()),
+                        Some(res.last_insert_id() as u32),
                     )),
                 )
             }
@@ -56,7 +54,7 @@ impl CategoryHandler {
         }
     }
 
-    pub async fn get_categories(
+    async fn get_all(
         State(state): State<AppState>,
     ) -> (StatusCode, Json<ApiResponse<Vec<Category>>>) {
         match CategoryRepository::find_categories(&state.db).await {
@@ -77,7 +75,7 @@ impl CategoryHandler {
         }
     }
 
-    pub async fn get_category(
+    async fn get_one(
         State(state): State<AppState>,
         Path(id): Path<i32>,
     ) -> (StatusCode, Json<ApiResponse<Category>>) {
@@ -99,22 +97,11 @@ impl CategoryHandler {
         }
     }
 
-    pub async fn update(
+    async fn update(
         State(state): State<AppState>,
         Path(id): Path<i32>,
         Json(payload): Json<Category>,
-    ) -> (StatusCode, Json<ApiResponse<i32>>) {
-        // let Some(id) = payload.id else {
-        //     warn!("category not updated: id provided is null!");
-        //     return (
-        //         StatusCode::NOT_ACCEPTABLE,
-        //         Json(ApiResponse::new(
-        //             "Your request does not provide the id of a specific category.",
-        //             None,
-        //         )),
-        //     );
-        // };
-
+    ) -> (StatusCode, Json<ApiResponse<u32>>) {
         match CategoryRepository::update(&state.db, payload, id).await {
             Ok(res) => {
                 if res.rows_affected() == 0u64 {
@@ -127,12 +114,13 @@ impl CategoryHandler {
                         )),
                     )
                 } else {
+                    let id = res.last_insert_id();
                     info!("A category was updated from database.");
                     (
                         StatusCode::OK,
                         Json(ApiResponse::new(
                             format!("Category with id {} has been updated.", id).as_str(),
-                            Some(id),
+                            Some(id as u32),
                         )),
                     )
                 }
@@ -141,16 +129,19 @@ impl CategoryHandler {
                 error!("{:?}", err);
                 (
                     StatusCode::INTERNAL_SERVER_ERROR,
-                    Json(ApiResponse::new("Server error: category not updated.", None)),
+                    Json(ApiResponse::new(
+                        "Server error: category not updated.",
+                        None,
+                    )),
                 )
             }
         }
     }
 
-    pub async fn delete(
+    async fn delete(
         State(state): State<AppState>,
         Path(id): Path<i32>,
-    ) -> (StatusCode, Json<ApiResponse<u64>>) {
+    ) -> (StatusCode, Json<ApiResponse<u32>>) {
         match CategoryRepository::delete(&state.db, id).await {
             Ok(res) => {
                 if res.rows_affected() == 0u64 {
@@ -164,7 +155,7 @@ impl CategoryHandler {
                     )
                 } else {
                     info!("A category was deleted from the table categories.");
-                    let id = res.last_insert_id();
+                    let id = res.last_insert_id() as u32;
                     (
                         StatusCode::OK,
                         Json(ApiResponse::new(

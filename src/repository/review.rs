@@ -1,6 +1,6 @@
 use sqlx::{MySql, Pool, QueryBuilder, mysql::MySqlQueryResult, query, query_as};
 
-use crate::models::{review::Review, user};
+use crate::models::review::Review;
 
 pub struct ReviewRepository;
 
@@ -27,7 +27,7 @@ impl ReviewRepository {
         .await
     }
     pub async fn find_all(pool: &Pool<MySql>) -> Result<Vec<Review>, sqlx::Error> {
-        query_as::<_, Review>("SELECT id, product_id, user_id, rating, comment, created_at, updated_at FROM reviews WHERE id = ?")
+        query_as::<_, Review>("SELECT id, product_id, user_id, rating, comment, created_at, updated_at FROM reviews")
         .fetch_all(pool)
         .await
     }

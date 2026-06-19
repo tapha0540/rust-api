@@ -6,6 +6,7 @@ use axum::{
 use tracing::{error, info, warn};
 
 use crate::{
+    handlers::Handler,
     models::payment::{Payment, PaymentMethod, PaymentStatus},
     repository::payment::PaymentRepository,
     types::{ApiResponse, AppState},
@@ -13,11 +14,11 @@ use crate::{
 
 pub struct PaymentHandler;
 
-impl PaymentHandler {
-    pub async fn create(
+impl Handler<Payment> for PaymentHandler {
+    async fn create(
         State(state): State<AppState>,
         Json(payload): Json<Payment>,
-    ) -> (StatusCode, Json<ApiResponse<u64>>) {
+    ) -> (StatusCode, Json<ApiResponse<u32>>) {
         let (Some(order_id), Some(amount), Some(method_str), Some(status_str)) = (
             payload.order_id,
             payload.amount,
@@ -54,7 +55,7 @@ impl PaymentHandler {
                     StatusCode::CREATED,
                     Json(ApiResponse::new(
                         "Payment created",
-                        Some(res.last_insert_id()),
+                        Some(res.last_insert_id() as u32),
                     )),
                 )
             }
@@ -68,7 +69,7 @@ impl PaymentHandler {
         }
     }
 
-    pub async fn get_payments(
+    async fn get_all(
         State(state): State<AppState>,
     ) -> (StatusCode, Json<ApiResponse<Vec<Payment>>>) {
         match PaymentRepository::find_all(&state.db).await {
@@ -91,7 +92,7 @@ impl PaymentHandler {
             }
         }
     }
-    pub async fn get_payment(
+    async fn get_one(
         State(state): State<AppState>,
         Path(id): Path<i32>,
     ) -> (StatusCode, Json<ApiResponse<Payment>>) {
@@ -112,11 +113,11 @@ impl PaymentHandler {
             }
         }
     }
-    pub async fn update(
+    async fn update(
         State(state): State<AppState>,
         Path(id): Path<i32>,
         Json(payload): Json<Payment>,
-    ) -> (StatusCode, Json<ApiResponse<i32>>) {
+    ) -> (StatusCode, Json<ApiResponse<u32>>) {
         match PaymentRepository::update(&state.db, payload, id).await {
             Ok(res) => {
                 if res.rows_affected() == 0u64 {
@@ -132,7 +133,10 @@ impl PaymentHandler {
                     info!("Payment updated.");
                     (
                         StatusCode::OK,
-                        Json(ApiResponse::new("Payment has been updated.", Some(id))),
+                        Json(ApiResponse::new(
+                            "Payment has been updated.",
+                            Some(id as u32),
+                        )),
                     )
                 }
             }
@@ -146,10 +150,10 @@ impl PaymentHandler {
         }
     }
 
-    pub async fn delete(
+    async fn delete(
         State(state): State<AppState>,
         Path(id): Path<i32>,
-    ) -> (StatusCode, Json<ApiResponse<u64>>) {
+    ) -> (StatusCode, Json<ApiResponse<u32>>) {
         match PaymentRepository::delete(&state.db, id).await {
             Ok(res) => {
                 if res.rows_affected() == 0u64 {
@@ -168,7 +172,7 @@ impl PaymentHandler {
                         StatusCode::OK,
                         Json(ApiResponse::new(
                             format!("Payment with id {} has been deleted.", id).as_str(),
-                            Some(id),
+                            Some(id as u32),
                         )),
                     )
                 }

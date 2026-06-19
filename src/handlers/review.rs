@@ -6,6 +6,7 @@ use axum::{
 use tracing::{error, info, warn};
 
 use crate::{
+    handlers::Handler,
     models::review::Review,
     repository::review::ReviewRepository,
     types::{ApiResponse, AppState},
@@ -13,11 +14,11 @@ use crate::{
 
 pub struct ReviewHandler;
 
-impl ReviewHandler {
-    pub async fn create(
+impl Handler<Review> for ReviewHandler {
+    async fn create(
         State(state): State<AppState>,
         Json(payload): Json<Review>,
-    ) -> (StatusCode, Json<ApiResponse<u64>>) {
+    ) -> (StatusCode, Json<ApiResponse<u32>>) {
         let (Some(product_id), Some(user_id), Some(rating), Some(comment)) = (
             payload.product_id,
             payload.user_id,
@@ -43,7 +44,7 @@ impl ReviewHandler {
                     StatusCode::CREATED,
                     Json(ApiResponse::new(
                         "Review created",
-                        Some(res.last_insert_id()),
+                        Some(res.last_insert_id() as u32),
                     )),
                 )
             }
@@ -57,7 +58,7 @@ impl ReviewHandler {
         }
     }
 
-    pub async fn get_reviews(
+    async fn get_all(
         State(state): State<AppState>,
     ) -> (StatusCode, Json<ApiResponse<Vec<Review>>>) {
         match ReviewRepository::find_all(&state.db).await {
@@ -80,7 +81,7 @@ impl ReviewHandler {
             }
         }
     }
-    pub async fn get_review(
+    async fn get_one(
         State(state): State<AppState>,
         Path(id): Path<i32>,
     ) -> (StatusCode, Json<ApiResponse<Review>>) {
@@ -101,11 +102,11 @@ impl ReviewHandler {
             }
         }
     }
-    pub async fn update(
+    async fn update(
         State(state): State<AppState>,
         Path(id): Path<i32>,
         Json(payload): Json<Review>,
-    ) -> (StatusCode, Json<ApiResponse<i32>>) {
+    ) -> (StatusCode, Json<ApiResponse<u32>>) {
         match ReviewRepository::update(&state.db, payload, id).await {
             Ok(res) => {
                 if res.rows_affected() == 0u64 {
@@ -123,7 +124,7 @@ impl ReviewHandler {
                         StatusCode::OK,
                         Json(ApiResponse::new(
                             format!("Review with id {} has been updated.", id).as_str(),
-                            Some(id),
+                            Some(id as u32),
                         )),
                     )
                 }
@@ -138,10 +139,10 @@ impl ReviewHandler {
         }
     }
 
-    pub async fn delete(
+    async fn delete(
         State(state): State<AppState>,
         Path(id): Path<i32>,
-    ) -> (StatusCode, Json<ApiResponse<u64>>) {
+    ) -> (StatusCode, Json<ApiResponse<u32>>) {
         match ReviewRepository::delete(&state.db, id).await {
             Ok(res) => {
                 if res.rows_affected() == 0u64 {
@@ -160,7 +161,7 @@ impl ReviewHandler {
                         StatusCode::OK,
                         Json(ApiResponse::new(
                             format!("Review with id {} has been deleted.", id).as_str(),
-                            Some(id),
+                            Some(id as u32),
                         )),
                     )
                 }

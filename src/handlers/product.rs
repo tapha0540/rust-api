@@ -6,6 +6,7 @@ use axum::{
 use tracing::{error, info, warn};
 
 use crate::{
+    handlers::Handler,
     models::product::Product,
     repository::product::ProductRepository,
     types::{ApiResponse, AppState},
@@ -13,11 +14,11 @@ use crate::{
 
 pub struct ProductHandler;
 
-impl ProductHandler {
-    pub async fn create(
+impl Handler<Product> for ProductHandler {
+    async fn create(
         State(state): State<AppState>,
         Json(payload): Json<Product>,
-    ) -> (StatusCode, Json<ApiResponse<u64>>) {
+    ) -> (StatusCode, Json<ApiResponse<u32>>) {
         let (
             Some(name),
             Some(description),
@@ -61,7 +62,10 @@ impl ProductHandler {
                 info!("Request to create a new Product was successful.");
                 (
                     StatusCode::CREATED,
-                    Json(ApiResponse::new("Product created", Some(res.last_insert_id()))),
+                    Json(ApiResponse::new(
+                        "Product created",
+                        Some(res.last_insert_id() as u32),
+                    )),
                 )
             }
             Err(err) => {
@@ -74,7 +78,7 @@ impl ProductHandler {
         }
     }
 
-    pub async fn get_products(
+    async fn get_all(
         State(state): State<AppState>,
     ) -> (StatusCode, Json<ApiResponse<Vec<Product>>>) {
         match ProductRepository::find_products(&state.db).await {
@@ -97,7 +101,7 @@ impl ProductHandler {
             }
         }
     }
-    pub async fn get_product(
+    async fn get_one(
         State(state): State<AppState>,
         Path(id): Path<i32>,
     ) -> (StatusCode, Json<ApiResponse<Product>>) {
@@ -118,11 +122,11 @@ impl ProductHandler {
             }
         }
     }
-    pub async fn update(
+    async fn update(
         State(state): State<AppState>,
         Path(id): Path<i32>,
         Json(payload): Json<Product>,
-    ) -> (StatusCode, Json<ApiResponse<i32>>) {
+    ) -> (StatusCode, Json<ApiResponse<u32>>) {
         match ProductRepository::update(&state.db, payload, id).await {
             Ok(res) => {
                 if res.rows_affected() == 0u64 {
@@ -140,7 +144,7 @@ impl ProductHandler {
                         StatusCode::OK,
                         Json(ApiResponse::new(
                             format!("Product with id {} has been updated.", id).as_str(),
-                            Some(id),
+                            Some(id as u32),
                         )),
                     )
                 }
@@ -153,13 +157,12 @@ impl ProductHandler {
                 )
             }
         }
-        
     }
 
-    pub async fn delete(
+    async fn delete(
         State(state): State<AppState>,
         Path(id): Path<i32>,
-    ) -> (StatusCode, Json<ApiResponse<u64>>) {
+    ) -> (StatusCode, Json<ApiResponse<u32>>) {
         match ProductRepository::delete(&state.db, id).await {
             Ok(res) => {
                 if res.rows_affected() == 0u64 {
@@ -178,7 +181,7 @@ impl ProductHandler {
                         StatusCode::OK,
                         Json(ApiResponse::new(
                             format!("Product with id {} has been deleted.", id).as_str(),
-                            Some(id),
+                            Some(id as u32),
                         )),
                     )
                 }

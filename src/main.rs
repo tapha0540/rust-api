@@ -10,7 +10,6 @@ mod utils;
 
 use axum::Router;
 use std::env;
-use tracing::info;
 
 use crate::{
     database::connect_db,
@@ -31,11 +30,11 @@ async fn main() {
     let app = Router::new()
         .nest("/auth", routes::auth::routes())
         .nest("/categories", routes::category::routes())
-        .nest("/products", routes::products::routes())
+        .nest("/products", routes::product::routes())
         .nest("/reviews", routes::review::routes())
-        .nest("/payments", routes::products::routes())
-        .with_state(state)
-        .layer(get_cors());
+        .nest("/payments", routes::payment::routes())
+        .layer(get_cors())
+        .with_state(state);
 
     let listener = tokio::net::TcpListener::bind(
         env::var("ADDR").expect("The environment variable addr is not set"),
