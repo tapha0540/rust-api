@@ -34,6 +34,7 @@ async fn main() {
         .nest("/products", routes::product::routes())
         .nest("/reviews", routes::review::routes())
         .nest("/payments", routes::payment::routes())
+        .nest("/orders", routes::order::routes())
         .layer(get_cors())
         .with_state(state);
 

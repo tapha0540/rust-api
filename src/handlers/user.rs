@@ -103,7 +103,7 @@ impl Handler<User> for UserHandler {
         State(state): State<AppState>,
         Path(id): Path<i32>,
     ) -> (StatusCode, Json<ApiResponse<User>>) {
-        match UserRepository::find(&state.db, Some(id), None, None).await {
+        match UserRepository::find_one(&state.db, Some(id), None, None).await {
             Ok(mut user) => {
                 info!("User found.");
                 // we get rid of the password for security reasons.

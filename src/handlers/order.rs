@@ -1,36 +1,63 @@
-use crate::{handlers::Handler, models::order::Order};
+use axum::{Extension, Json, extract::State, http::StatusCode};
 
+use crate::{
+    models::order::Order,
+    types::{ApiResponse, AppState},
+    utils::token::Claims,
+};
 
 pub struct OrderHandler;
 
-impl Handler<Order> for OrderHandler {
-    async fn create(
+impl OrderHandler {
+    pub async fn create(
+        State(state): State<AppState>,
+        Json(payload): Json<Order>,
+    ) -> (StatusCode, Json<ApiResponse<u32>>) {
+        todo!()
+    }
+
+    pub async fn get_all(
         state: axum::extract::State<crate::types::AppState>,
-        payload: axum::Json<Order>,
-    ) -> (axum::http::StatusCode, axum::Json<crate::types::ApiResponse<u32>>) {
-        todo!()
+        Extension(claims): Extension<Claims>,
+    ) -> (
+        axum::http::StatusCode,
+        axum::Json<crate::types::ApiResponse<Vec<Order>>>,
+    ) {
+        tracing::info!("{claims:?}");
+        (
+            StatusCode::OK,
+            Json(ApiResponse::new(format!("{claims:?}").as_str(), None)),
+        )
     }
 
-    async fn get_all(state: axum::extract::State<crate::types::AppState>) -> (axum::http::StatusCode, axum::Json<crate::types::ApiResponse<Vec<Order>>>) {
-        todo!()
-    }
-
-    async fn get_one(
+    pub async fn get_one(
         state: axum::extract::State<crate::types::AppState>,
         id: axum::extract::Path<i32>,
-    ) -> (axum::http::StatusCode, axum::Json<crate::types::ApiResponse<Order>>) {
+    ) -> (
+        axum::http::StatusCode,
+        axum::Json<crate::types::ApiResponse<Order>>,
+    ) {
         todo!()
     }
 
-    async fn update(
+    pub async fn update(
         state: axum::extract::State<crate::types::AppState>,
         id: axum::extract::Path<i32>,
         payload: axum::Json<Order>,
-    ) -> (axum::http::StatusCode, axum::Json<crate::types::ApiResponse<u32>>) {
+    ) -> (
+        axum::http::StatusCode,
+        axum::Json<crate::types::ApiResponse<u32>>,
+    ) {
         todo!()
     }
 
-    async fn delete(state: axum::extract::State<crate::types::AppState>, id: axum::extract::Path<i32>) -> (axum::http::StatusCode, axum::Json<crate::types::ApiResponse<u32>>) {
+    pub async fn delete(
+        state: axum::extract::State<crate::types::AppState>,
+        id: axum::extract::Path<i32>,
+    ) -> (
+        axum::http::StatusCode,
+        axum::Json<crate::types::ApiResponse<u32>>,
+    ) {
         todo!()
     }
 }

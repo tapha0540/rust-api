@@ -24,7 +24,7 @@ impl UserRepository {
         .execute(pool).await
     }
 
-    pub async fn find(
+    pub async fn find_one(
         pool: &Pool<MySql>,
         id: Option<i32>,
         email: Option<String>,

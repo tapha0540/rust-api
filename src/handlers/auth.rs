@@ -37,7 +37,8 @@ impl AuthHandler {
 
         // Verify if a similar account already exists
         if let Ok(similar_user) =
-            UserRepository::find(&state.db, None, Some(email.clone()), Some(phone.clone())).await
+            UserRepository::find_one(&state.db, None, Some(email.clone()), Some(phone.clone()))
+                .await
         {
             let param: &str = if let Some(val) = similar_user.email
                 && val == email
@@ -105,7 +106,7 @@ impl AuthHandler {
 
         // find the user with that email or phone
         let Ok(found_user) =
-            UserRepository::find(&state.db, None, Some(email), payload.phone.clone()).await
+            UserRepository::find_one(&state.db, None, Some(email), payload.phone.clone()).await
         else {
             return (
                 StatusCode::NOT_FOUND,
@@ -152,10 +153,10 @@ impl AuthHandler {
             UserRole::new(found_user_role).expect("user's role from database is Invalid."),
         )
         .unwrap();
-
+        info!("A user logged in successfully.");
         (
             StatusCode::OK,
-            Json(ApiResponse::new("successfully signed in", Some(user_token))),
+            Json(ApiResponse::new("successfully logged in", Some(user_token))),
         )
     }
     pub async fn log_out() -> String {

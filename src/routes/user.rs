@@ -1,6 +1,10 @@
-use crate::{handlers::{Handler, review::ReviewHandler, user::UserHandler}, types::AppState};
+use crate::{
+    handlers::{Handler, user::UserHandler},
+    middlewares::user::UserMiddlewares,
+    types::AppState,
+};
 use axum::{
-    Router,
+    Router, middleware,
     routing::{delete, get, post, put},
 };
 
@@ -11,4 +15,6 @@ pub fn routes() -> Router<AppState> {
         .route("/{id}", get(UserHandler::get_one))
         .route("/{id}", put(UserHandler::update))
         .route("/{id}", delete(UserHandler::delete))
+        .layer(middleware::from_fn(UserMiddlewares::admin_only))
+        .layer(middleware::from_fn(UserMiddlewares::get_user_from_token))
 }

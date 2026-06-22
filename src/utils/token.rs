@@ -9,7 +9,7 @@ use crate::models::user::UserRole;
 
 const ONE_MONTH: i64 = 60 * 60 * 24 * 30;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Claims {
     pub sub: i32,
     pub role: String,
